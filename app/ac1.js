@@ -43,7 +43,7 @@ function getFormData() {
     };
 }
 
-function calculateTax(clientType) {
+function calculateTax(clientType = "standard") { 
     let tax;
 
     if (clientType == "premium") {
@@ -52,7 +52,7 @@ function calculateTax(clientType) {
         tax = 21;
     }
 
-    return tax;
+    return clientType === "premium" ? 10 : 21;
 }
 
 function calculateBudget() {
@@ -221,7 +221,7 @@ function calculateServicesTotal() {
 
 function testTaxScope() {
     if (true) {
-        var tax = 21;
+        let tax = 21;
     }
 
     console.log(
