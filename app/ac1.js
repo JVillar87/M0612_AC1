@@ -65,16 +65,35 @@ function calculateBudget() {
     let price =
         parseFloat(formData.price);
 
-    let discount =
-        parseInt(formData.discount);
+    const inputDiscount = formData.discount;
+    const discountValue = inputDiscount !== "" ? inputDiscount : undefined;
 
-    if (discount === 0 || isNaN(discount) || discount < 0) {
-        discount = 0;
+    let discount =
+        parseInt(discountValue ?? 0, 10);
+
+    /*if (discount === 0 || isNaN(discount) || discount < 0) {
+        discount = 0;*/
+
+    //Validamos descuento que no sea negativo
+    if (Number.isNaN(discount) || discount < 0) {
+        throw new Error("El descuento no puede ser negativo/invalido.");
     }
 
+    //Validamos horas que no sea negativo
+    if (Number.isNaN(hours) || hours < 0) {
+        throw new Error("Las horas no pueden ser negativas/invalidas.");
+    }
+
+    //Validamos precio que no sea negativo
+    if (Number.isNaN(price) || price < 0) {
+        throw new Error("El precio no puede ser negativo/invalido.");
+    }
 
     if (formData.clientType == "premium") {
         discount = 20;
+    }
+    else if (formData.clientType == "VIP") {
+        discount = 10;
     }
 
     let subtotal =
@@ -83,11 +102,9 @@ function calculateBudget() {
     let tax =
         calculateTax(formData.clientType);
 
-    if (
-        hours > 10 ||
-        price > 50 &&
-        formData.clientType == "standard"
-    ) {
+    const isLargeProject = (hours > 10 || price > 50);
+
+    if (isLargeProject && (formData.clientType === "standard")) {
         tax = 10;
     }
 
@@ -124,6 +141,7 @@ function calculateBudget() {
         total: total
     };
 }
+
 
 function processBudget() {
     try {
@@ -183,38 +201,27 @@ function renderError(error) {
 }
 
 function listServices() {
-    for (
-        let index = 0;
-        index < services.length;
-        index++
-    ) {
+    for (const [index, service] of services.entries()) {
         console.log(
             "Servei " +
             (index + 1) +
             ": " +
-            services[index] +
+            service +
             " €"
         );
     }
 }
 
 function calculateServicesTotal() {
-    let total = 0;
-
-    for (
-        let index = 0;
-        index < services.length;
-        index++
-    ) {
-        total += services[index];
-    }
-
-    return total;
+    return services.reduce(
+        (total, service) => total + service,
+        0
+    );
 }
 
 function testTaxScope() {
     if (true) {
-        let tax = 21;
+        var tax = 21;
     }
 
     console.log(
