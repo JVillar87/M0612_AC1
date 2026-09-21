@@ -43,15 +43,7 @@ function getFormData() {
     };
 }
 
-function calculateTax(clientType = "standard") { 
-    let tax;
-
-    if (clientType == "premium") {
-        tax = 10;
-    } else {
-        tax = 21;
-    }
-
+function calculateTax(clientType = "standard") {
     return clientType === "premium" ? 10 : 21;
 }
 
@@ -89,10 +81,10 @@ function calculateBudget() {
         throw new Error("El precio no puede ser negativo/invalido.");
     }
 
-    if (formData.clientType == "premium") {
+    if (formData.clientType === "premium") {
         discount = 20;
     }
-    else if (formData.clientType == "VIP") {
+    else if (formData.clientType === "VIP") {
         discount = 10;
     }
 
@@ -224,10 +216,11 @@ function testTaxScope() {
         let tax = 21;
     }
 
-    console.log(
-        "Impost de prova:",
-        tax
-    );
+    try {
+        console.log("Impost de prova:", tax);
+    } catch (error) {
+        console.warn("Ex. 1.2 - Demostración de ámbito de bloque:", error.message);
+    }
 }
 
 const calculateButton =
